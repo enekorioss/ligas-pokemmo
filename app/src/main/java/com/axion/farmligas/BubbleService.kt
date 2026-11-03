@@ -6,12 +6,15 @@ import android.graphics.PixelFormat
 import android.os.Build
 import android.os.IBinder
 import android.view.*
+import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.webkit.WebViewAssetLoader
 
 class BubbleService : Service() {
 
@@ -19,10 +22,14 @@ class BubbleService : Service() {
     private lateinit var bubble: ImageView
     private var expanded: FrameLayout? = null
     private lateinit var bubbleParams: WindowManager.LayoutParams
+    private lateinit var assetLoader: WebViewAssetLoader
 
     override fun onCreate() {
         super.onCreate()
         wm = getSystemService(WINDOW_SERVICE) as WindowManager
+        assetLoader = WebViewAssetLoader.Builder()
+            .addPathHandler("/assets/", WebViewAssetLoader.AssetsPathHandler(this))
+            .build()
         startForeground(1, buildNotification())
         createBubble()
     }
@@ -39,7 +46,8 @@ class BubbleService : Service() {
             WindowManager.LayoutParams.WRAP_CONTENT,
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-            else WindowManager.LayoutParams.TYPE_PHONE,
+            else
+                WindowManager.LayoutParams.TYPE_PHONE,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
         ).apply {
@@ -57,12 +65,9 @@ class BubbleService : Service() {
         bubble.setOnTouchListener { _, ev ->
             when (ev.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    initX = bubbleParams.x
-                    initY = bubbleParams.y
-                    touchX = ev.rawX
-                    touchY = ev.rawY
-                    moved = false
-                    false
+                    initX = bubbleParams.x; initY = bubbleParams.y
+                    touchX = ev.rawX; touchY = ev.rawY
+                    moved = false; false
                 }
                 MotionEvent.ACTION_MOVE -> {
                     val dx = ev.rawX - touchX
@@ -91,8 +96,15 @@ class BubbleService : Service() {
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
             settings.allowFileAccess = true
-            webViewClient = WebViewClient()
-            loadUrl("file:///android_asset/www/index.html")
+            webViewClient = object : WebViewClient() {
+                override fun shouldInterceptRequest(
+                    view: WebView,
+                    request: WebResourceRequest
+                ): WebResourceResponse? {
+                    return assetLoader.shouldInterceptRequest(request.url)
+                }
+            }
+            loadUrl("https://appassets.androidplatform.net/assets/www/index.html")
         }
 
         val header = LinearLayout(this).apply {
