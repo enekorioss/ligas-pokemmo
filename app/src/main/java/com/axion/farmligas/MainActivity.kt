@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
             allowFileAccess = true
             allowContentAccess = true
             mediaPlaybackRequiresUserGesture = false
+            allowFileAccessFromFileURLs = true
+            allowUniversalAccessFromFileURLs = true
         }
         webView.webViewClient = WebViewClient()
         webView.loadUrl("file:///android_asset/www/index.html")

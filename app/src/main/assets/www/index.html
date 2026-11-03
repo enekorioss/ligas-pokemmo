@@ -9,7 +9,7 @@
     <link rel="preload" as="script" href="assets/index-BmLHS4fQ.js" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&display=swap" />
     <title>Farmeo De Ligas PokeMMO</title>
-    <script type="module" crossorigin src="assets/index-BmLHS4fQ.js"></script>
+    <script crossorigin src="assets/index-BmLHS4fQ.js"></script>
     <link rel="stylesheet" crossorigin href="assets/index-CjIbjzbu.css" />
     <style>
       .guide-header__title,
@@ -327,7 +327,6 @@
         b.onclick = function () {
           b.textContent = '…';
           try {
-            if ('serviceWorker' in navigator) {
               navigator.serviceWorker.getRegistrations().then(function (regs) {
                 regs.forEach(function (r) { r.unregister(); });
               });
