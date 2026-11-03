@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="script" href="assets/index-BmLHS4fQ.js" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&display=swap" />
+    <title>Farmeo De Ligas PokeMMO</title>
+    <script type="module" crossorigin src="assets/index-BmLHS4fQ.js"></script>
+    <link rel="stylesheet" crossorigin href="assets/index-CjIbjzbu.css" />
+    <style>
+      .guide-header__title,
+      .guide-header__label,
+      .guide-header__route,
+      .guide-header__stop,
+      .tips,
+      .tips__toggle,
+      .credits__people,
+      .credits__avatar,
+      .credits__separator,
+      .halloween-rain,
+      .theme-switcher,
+      .trick__team-link,
+      .team-panel,
+      .scroll-top { display: none !important; }
+      .background__particle { display: none !important; }
+      .credits__btn--next {
+        display: inline-flex !important;
+        align-items: center; justify-content: center; gap: 6px;
+        margin: 8px 12px; padding: 8px 16px; min-height: 40px; width: auto !important;
+        border: 1px solid rgba(74,222,128,0.45); border-radius: 999px;
+        background: rgba(74,222,128,0.10); color: #d1fae5;
+        font-family: 'Chakra Petch','DM Sans',sans-serif;
+        font-size: 0.95rem; font-weight: 600; letter-spacing: 0.02em; line-height: 1;
+        cursor: pointer; transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      }
+      .credits__btn--next > * { display: none !important; }
+      .credits__btn--next::after { content: "Siguiente líder ➔"; font-size: 0.95rem; color: #ecfdf5; }
+      .credits__btn--next:hover,
+      .credits__btn--next:focus-visible {
+        background: rgba(74,222,128,0.22); border-color: #4ade80;
+        outline: 3px solid #4ade80 !important; outline-offset: 3px !important;
+        box-shadow: 0 0 0 4px rgba(74,222,128,0.20);
+      }
+      .credits__btn--next:active { transform: scale(0.97); }
+      html, body {
+        -webkit-font-smoothing: antialiased; text-rendering: optimizeSpeed;
+        background: #000; overscroll-behavior: contain;
+      }
+      img { max-width: 100%; height: auto; }
+      .guide__grid, .card, .tips, .guide-header { content-visibility: auto; contain-intrinsic-size: 300px; }
+      :focus { outline: none; }
+      :focus-visible, .card:focus, button:focus, a:focus, [tabindex]:focus {
+        outline: 3px solid #4ade80 !important; outline-offset: 3px !important; border-radius: 10px;
+      }
+      @media (min-width: 960px) and (pointer: coarse) {
+        html { font-size: 18px; }
+        button, a, [tabindex] { min-height: 48px; min-width: 48px; }
+        .credits__btn--next { font-size: 1rem; padding: 10px 20px; }
+        .credits__btn--next::after { font-size: 1rem; }
+      }
+      body { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+      ::-webkit-scrollbar { width: 8px; height: 8px; }
+      ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 8px; }
+    
+      /* FONDO: quitar barrido y partículas */
+      .background,
+      .background::before,
+      .background::after,
+      .background__particle,
+      .background__glow {
+        animation: none !important;
+        transition: none !important;
+      }
+      .background::before,
+      .background::after {
+        display: none !important;
+      }
+      .background__particle {
+        display: none !important;
+      }
+
+      /* CARD: quitar crecimiento y sombra al pulsar/hover/active */
+      .card,
+      .card--region,
+      .card:hover,
+      .card--region:hover,
+      .card:active,
+      .card--region:active,
+      .card.is-active,
+      .card--region.is-active {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+        box-shadow: none !important;
+      }
+      .card::before,
+      .card::after,
+      .card--region::before,
+      .card--region::after {
+        animation: none !important;
+        transition: none !important;
+        display: none !important;
+      }
+
+      /* POKEMON CARD: quitar también el hover/active */
+      .pokemon-card,
+      .pokemon-card:hover,
+      .pokemon-card.is-active {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+      }
+
+      /* Quitar el anillo del card de región al activarse */
+      .card,
+      .card--region,
+      .card.is-active,
+      .card--region.is-active,
+      .card:hover,
+      .card--region:hover,
+      .card:focus,
+      .card--region:focus,
+      .card:active,
+      .card--region:active {
+        box-shadow: none !important;
+        outline: none !important;
+        transform: none !important;
+        border-color: var(--border) !important;
+      }
+
+      /* Quitar el barrido del fondo (por si el * no lo pilla) */
+      .background,
+      .background::before,
+      .background::after {
+        animation: none !important;
+        display: none !important;
+      }
+
+      /* Matar TODAS las animaciones y transiciones */
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+      /* Quitar el barrido del fondo */
+      .background,
+      .background::before,
+      .background::after,
+      .background__particle {
+        display: none !important;
+        animation: none !important;
+      }
+
+      /* Matar el barrido exacto de .background::before */
+      .background::before,
+      .background::after {
+        content: none !important;
+        display: none !important;
+        animation: none !important;
+        background: none !important;
+        opacity: 0 !important;
+      }
+
+      /* Matar animaciones de entrada de contenedores */
+      .guide__pokemons,
+      .guide__pokemons *,
+      .details,
+      .details *,
+      .details__tricks,
+      .details__tricks *,
+      .slide-up,
+      .slide-down,
+      .fade-in {
+        animation: none !important;
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      /* Resaltar el Pokémon activo y atenuar los demás */
+      .pokemon-card {
+        position: relative;
+        transition: none !important;
+      }
+      .pokemon-card.is-active {
+        outline: 3px solid #4ade80 !important;
+        outline-offset: 2px !important;
+        background: rgba(74, 222, 128, 0.18) !important;
+        border-radius: 10px;
+        z-index: 2;
+      }
+      .pokemon-card:not(.is-active) {
+        opacity: 0.75;
+      }
+      .pokemon-card.is-active .pokemon-card__name {
+        color: #ecfdf5 !important;
+        font-weight: 700;
+      }
+
+      /* En TV, más grande el resaltado */
+      @media (min-width: 960px) and (pointer: coarse) {
+        .pokemon-card.is-active {
+          outline-width: 4px !important;
+          background: rgba(74, 222, 128, 0.22) !important;
+        }
+        .pokemon-card:not(.is-active) {
+          opacity: 0.7;
+        }
+      }
+
+      /* Resaltado ligero de Pokémon comunes */
+      .pokemon-card.__hist_comun {
+        position: relative;
+        outline: 2px solid rgba(250, 204, 21, 0.55) !important;
+        outline-offset: 1px !important;
+      }
+      .pokemon-card.__hist_comun::after {
+        content: "★";
+        position: absolute;
+        top: 2px;
+        right: 4px;
+        color: #facc15;
+        font-size: 13px;
+        line-height: 1;
+        text-shadow: none;
+      }
+      .pokemon-card:focus,
+      .pokemon-card:focus-visible {
+        outline: 2px solid #4ade80 !important;
+        outline-offset: 2px !important;
+      }
+
+      /* Nombres de Pokémon más ligeros */
+      .pokemon-card__name {
+        text-shadow: none !important;
+        background: none !important;
+        font-weight: 500 !important;
+        letter-spacing: 0 !important;
+      }
+
+      /* Contenedor info líder */
+      #__lider_info {
+        font-family: 'Chakra Petch', sans-serif;
+      }
+
+      /* Bloque A: ocultar secciones enteras */
+      .guide-header,
+      .theme-switcher,
+      .halloween-rain,
+      .credits__people,
+      .credits__avatar,
+      .credits__separator,
+      .tips,
+      .tips__toggle {
+        display: none !important;
+      }
+
+      /* Bloque C: foco más visible en TV */
+      [tabindex]:focus-visible,
+      .card:focus-visible,
+      .card--leader:focus-visible,
+      .card--region:focus-visible,
+      .pokemon-card:focus-visible {
+        outline: 4px solid #39ff14 !important;
+        outline-offset: 3px !important;
+        box-shadow: 0 0 0 6px rgba(57,255,20,0.25) !important;
+        border-radius: 10px;
+      }
+</style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+    (function () {
+      function focusables() {
+        document.querySelectorAll('.card, [role="button"], .credits__btn--next').forEach((el) => {
+          if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+        });
+      }
+      function lazyImages() {
+        document.querySelectorAll('img').forEach((img) => {
+          if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
+          if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
+        });
+      }
+      const OCULTAR_TEXTO = ['Cerrar Sesión', 'Cerrar sesion'];
+      function ocultarSesion() {
+        document.querySelectorAll('button, a, span, div, p').forEach((el) => {
+          if (el.children.length > 0) return;
+          const t = el.textContent.trim();
+          for (const p of OCULTAR_TEXTO) {
+            if (t === p) {
+              el.style.display = 'none';
+              const par = el.parentElement;
+              if (par && (/@/.test(par.textContent || '') || /Usuario:/i.test(par.textContent || ''))) par.style.display = 'none';
+            }
+          }
+        });
+        document.querySelectorAll('span, div, p, small').forEach((el) => {
+          if (el.children.length > 0) return;
+          const t = el.textContent.trim();
+          if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t)) {
+            const par = el.parentElement;
+            if (par) par.style.display = 'none'; else el.style.display = 'none';
+          }
+        });
+      }
+      function aplicar() { focusables(); lazyImages(); ocultarSesion(); }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', aplicar);
+      else aplicar();
+      [300, 800, 1500, 3000, 6000].forEach((ms) => setTimeout(aplicar, ms));
+      let pendiente = false;
+      new MutationObserver(() => {
+        if (pendiente) return;
+        pendiente = true;
+        setTimeout(() => { pendiente = false; aplicar(); }, 300);
+      }).observe(document.body, { childList: true, subtree: true });
+
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').catch(() => {});
+        });
+      }
+    })();
+    </script>
+  
+    <script>
+    (function () {
+      let lastLeader = null;
+      let lastPokemons = null;
+
+      function scrollToPokemons() {
+        const sec = document.querySelector('.guide__pokemons');
+        if (!sec || sec.children.length === 0) return;
+        // evitar repetir scroll si no cambia el contenido
+        const firma = sec.textContent.trim().slice(0, 80);
+        if (firma === lastPokemons) return;
+        lastPokemons = firma;
+        
+      }
+
+      let pendiente = false;
+      new MutationObserver(() => {
+        if (pendiente) return;
+        pendiente = true;
+        setTimeout(() => {
+          pendiente = false;
+          scrollToPokemons();
+        }, 200);
+      }).observe(document.body, { childList: true, subtree: true });
+    })();
+    </script>
+
+<script>
+(function () {
+  // Modo TV: hacer focusables los clicables no nativos
+  var SELECTORES = [
+    '.trick__box',
+    '.trick__box--expandable',
+    '.trick__team-link',
+    '.card',
+    '.card--leader',
+    '.card--region',
+    '.pokemon-card',
+    '.details__tricks > *',
+    '[onclick]'
+  ];
+
+  function focusables() {
+    SELECTORES.forEach(function (sel) {
+      document.querySelectorAll(sel).forEach(function (el) {
+        if (el.tagName === 'BUTTON' || el.tagName === 'A') return;
+        if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+        if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
+      });
+    });
+  }
+
+  // Enter/Espacio activan el click en el elemento enfocado
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var el = document.activeElement;
+    if (!el) return;
+    if (el.tagName === 'BUTTON' || el.tagName === 'A' || el.tagName === 'INPUT') return;
+    if (el.hasAttribute('tabindex')) {
+      e.preventDefault();
+      el.click();
+    }
+  });
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', focusables);
+  else focusables();
+  [300, 800, 1500, 3000, 6000].forEach(function (ms) { setTimeout(focusables, ms); });
+  new MutationObserver(focusables).observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+(function () {
+  function crearBoton() {
+    if (document.getElementById('__reload_btn')) return;
+    var b = document.createElement('button');
+    b.id = '__reload_btn';
+    b.textContent = '↻';
+    b.title = 'Recargar sin caché';
+    b.style.cssText = 'position:fixed;top:8px;right:8px;z-index:999999;width:36px;height:36px;border-radius:50%;border:1px solid rgba(74,222,128,0.4);background:rgba(20,20,20,0.8);color:#4ade80;font-size:18px;line-height:1;cursor:pointer;';
+    b.onclick = function () {
+      b.textContent = '…';
+      try {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(function (regs) {
+            regs.forEach(function (r) { r.unregister(); });
+          });
+        }
+        if ('caches' in window) {
+          caches.keys().then(function (keys) {
+            keys.forEach(function (k) { caches.delete(k); });
+          });
+        }
+      } catch (e) {}
+      setTimeout(function () { location.reload(true); }, 400);
+    };
+    document.body.appendChild(b);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', crearBoton);
+  else crearBoton();
+  setInterval(crearBoton, 2000);
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+(function () {
+  var KEY_VISITADOS = 'farmligas_visitados';
+  var KEY_LIDER = 'farmligas_ultimo_lider';
+  var ultimoVisto = null;
+
+  function getVisitados() {
+    try { return JSON.parse(localStorage.getItem(KEY_VISITADOS) || '[]'); } catch (e) { return []; }
+  }
+  function setVisitados(a) { try { localStorage.setItem(KEY_VISITADOS, JSON.stringify(a)); } catch (e) {} }
+
+  
+
+  
+
+
+  
+
+    var total = document.querySelectorAll('.card--leader').length;
+    var visitados = getVisitados().length;
+    var pct = total ? Math.min(100, Math.round((visitados / total) * 100)) : 0;
+    var f = document.getElementById('__prog_fill');
+    if (f) f.style.width = pct + '%';
+  }
+
+  function liderActivoEl() {
+    return document.querySelector('.card--leader.is-active');
+  }
+  function nombreDe(el) {
+    if (!el) return '';
+    var ov = el.querySelector('.card__overlay');
+    return ov ? (ov.textContent || '').trim() : '';
+  }
+
+  function registrarVisitado() {
+    var l = liderActivoEl();
+    if (!l) { ultimoVisto = null; return; }
+    var n = nombreDe(l);
+    if (!n) return;
+    if (n === ultimoVisto) return;
+    ultimoVisto = n;
+    var arr = getVisitados();
+    if (arr.indexOf(n) === -1) { arr.push(n); setVisitados(arr); }
+    progreso();
+  }
+
+  function guardarUltimo() {
+    var l = liderActivoEl();
+    if (l) localStorage.setItem(KEY_LIDER, nombreDe(l));
+  }
+
+  function infoLider() {
+    var next = document.querySelector('.credits__btn--next');
+    if (!next) return;
+    var cont = document.getElementById('__lider_info');
+    if (!cont) {
+      cont = document.createElement('div');
+      cont.id = '__lider_info';
+      cont.style.cssText = 'margin:8px 12px;padding:8px 12px;border-radius:10px;border:1px solid rgba(74,222,128,0.3);background:rgba(74,222,128,0.06);color:#d1fae5;font-size:0.9rem;';
+      next.parentElement.insertBefore(cont, next.nextSibling);
+    }
+    var act = liderActivoEl();
+    if (!act) { cont.style.display = 'none'; return; }
+    var nombre = nombreDe(act);
+    var lista = document.querySelectorAll('.card--leader');
+    var numero = 0;
+    for (var i = 0; i < lista.length; i++) { if (lista[i] === act) { numero = i + 1; break; } }
+    cont.style.display = 'block';
+    cont.textContent = 'Líder ' + numero + ': ' + nombre;
+  }
+
+  function finRun() {
+    var next = document.querySelector('.credits__btn--next');
+    if (!next) return;
+    var regiones = document.querySelectorAll('.card--region');
+    var lideres = document.querySelectorAll('.card--leader');
+    var regionAct = document.querySelector('.card--region.is-active');
+    var liderAct = liderActivoEl();
+    if (!regiones.length || !lideres.length || !regionAct || !liderAct) {
+      next.style.display = '';
+      return;
+    }
+    var ultimaRegion = regiones[regiones.length - 1];
+    var ultimoLider = lideres[lideres.length - 1];
+    if (regionAct === ultimaRegion && liderAct === ultimoLider) {
+      next.style.display = 'none';
+    } else {
+      next.style.display = '';
+    }
+  }
+
+  setInterval(function () {
+    guardarUltimo();
+    registrarVisitado();
+    progreso();
+    infoLider();
+    finRun();
+  }, 800);
+})();
+</script>
+
+<script>
+(function () {
+  var yaPrefetch = {};
+  function prefetchLideres() {
+    var regionAct = document.querySelector('.card--region.is-active');
+    if (!regionAct) return;
+    // imágenes de líderes de la región actual
+    document.querySelectorAll('.card--leader').forEach(function (l) {
+      var img = l.querySelector('.card__leader-image');
+      if (!img || !img.src) return;
+      if (yaPrefetch[img.src]) return;
+      yaPrefetch[img.src] = true;
+      var link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.as = 'image';
+      link.href = img.src;
+      document.head.appendChild(link);
+    });
+  }
+  setInterval(prefetchLideres, 1500);
+})();
+</script>
+
+<script>
+(function () {
+  var DUR = 200;
+  var raf = null;
+  var orig = Element.prototype.scrollIntoView;
+  Element.prototype.scrollIntoView = function (opts) {
+    var el = this;
+    var rect = el.getBoundingClientRect();
+    var targetY = window.scrollY + rect.top - 80;
+    if (raf) cancelAnimationFrame(raf);
+    var startY = window.scrollY;
+    var dist = targetY - startY;
+    if (Math.abs(dist) < 2) return;
+    var start = performance.now();
+    function step(now) {
+      var t = Math.min((now - start) / DUR, 1);
+      var ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+      window.scrollTo(0, startY + dist * ease);
+      if (t < 1) raf = requestAnimationFrame(step);
+      else raf = null;
+    }
+    raf = requestAnimationFrame(step);
+  };
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+  #__btn_siguiente_region {
+    position: fixed;
+    bottom: 20px;
+    right: 130px;
+    z-index: 999999;
+    padding: 10px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(57,255,20,0.5);
+    background: rgba(20,20,20,0.9);
+    color: #39ff14;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  #__btn_siguiente_region:active { transform: scale(0.96); }
+  #__runs_info {
+    margin: 4px 12px 8px;
+    font-size: 0.8rem;
+    color: #a1a1aa;
+    font-family: 'Chakra Petch', sans-serif;
+  }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+<style>
+  #__crono {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 999999;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(57,255,20,0.5);
+    background: rgba(20,20,20,0.9);
+    color: #39ff14;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: monospace;
+    cursor: pointer;
+  }
+  #__crono:active { transform: scale(0.97); }
+</style>
+
+<button id="__crono">00:00:00</button>
+
+<script>
+(function () {
+  var crono = document.getElementById('__crono');
+  var corriendo = false;
+  var inicio = 0;
+  var acumulado = 0;
+
+  function formato(ms) {
+    var s = Math.floor(ms / 1000);
+    var h = Math.floor(s / 3600);
+    var m = Math.floor((s % 3600) / 60);
+    var seg = s % 60;
+    function p(n) { return n < 10 ? '0' + n : '' + n; }
+    return p(h) + ':' + p(m) + ':' + p(seg);
+  }
+
+  function tick() {
+    var t = acumulado;
+    if (corriendo) t += Date.now() - inicio;
+    if (crono) crono.textContent = formato(t);
+  }
+  setInterval(tick, 500);
+  tick();
+
+  crono.addEventListener('click', function () {
+    if (corriendo) {
+      // segundo clic: reiniciar a cero
+      corriendo = false;
+      acumulado = 0;
+      inicio = 0;
+    } else {
+      // primer clic: iniciar
+      inicio = Date.now();
+      corriendo = true;
+    }
+    tick();
+  });
+
+  function ocultarEnPokemon() {
+    var hayPokemon = document.querySelector('.pokemon-card');
+    var hayDetalle = document.querySelector('.details');
+    var ocultar = !!(hayPokemon || hayDetalle);
+    if (crono) crono.style.display = ocultar ? 'none' : '';
+  }
+  setInterval(ocultarEnPokemon, 500);
+})();
+</script>
+</body>
+</html>
